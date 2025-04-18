@@ -2,7 +2,7 @@ Web Scraping and Visualization System for Cryptocurrency Prices
 ================================================================
 
 Author: Stephen Moorcroft  
-Date: 2025  
+Date: 18/04/2025  
 Version: 1.0  
 GitHub: https://github.com/codemasternot/Web-scraping
 
