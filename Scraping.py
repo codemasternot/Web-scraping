@@ -1,9 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[736]:
-
-
 import requests
 from bs4 import BeautifulSoup
 import pandas as pd
@@ -14,9 +8,6 @@ import matplotlib.pyplot as plt
 from datetime import datetime
 import schedule
 import csv
-
-
-# In[737]:
 
 
 CONFIG_FILE = 'crypto_websites.csv'
@@ -33,9 +24,6 @@ def create_config_file():
         print(f"Created configuration file: {CONFIG_FILE}")
 
 
-# In[738]:
-
-
 def read_config():
     """Read the configuration file"""
     if not os.path.exists(CONFIG_FILE):
@@ -47,10 +35,7 @@ def read_config():
         for row in reader:
             websites.append(row)
     return websites
-
-
-# In[739]:
-
+    
 
 def scrape_coinmarketcap(target):
     """Scrape the price of a specific cryptocurrency from CoinMarketCap"""
@@ -74,9 +59,6 @@ def scrape_coinmarketcap(target):
         return None
 
 
-# In[740]:
-
-
 def scrape_coinmarketcap_ethereum(target):
     """Scrape the price of Ethereum from CoinMarketCap"""
     headers = {
@@ -97,11 +79,7 @@ def scrape_coinmarketcap_ethereum(target):
     except Exception as e:
         print(f"Error scraping Ethereum from CoinMarketCap: {e}")
         return None
-
-
-# In[741]:
-
-
+#This function was removed as I am only allowed a certain amount of scrapes per day for this page
 #def scrape_alpha_vantage_stocks(target):
     #"""Scrape stock data from Alpha Vantage API"""
     # **TODO: Replace with your actual Alpha Vantage API key**
@@ -126,9 +104,8 @@ def scrape_coinmarketcap_ethereum(target):
         #return None
 
 
-# In[742]:
 
-
+#XRP scraping function
 def scrape_coinmarketcap_xrp(target):
     """Scrape the price of XRP from CoinMarketCap"""
     headers = {
@@ -151,8 +128,6 @@ def scrape_coinmarketcap_xrp(target):
         return None
 
 
-# In[743]:
-
 
 def scrape_all_sites():
     """Scrape data from all configured websites"""
@@ -166,7 +141,7 @@ def scrape_all_sites():
             data = scrape_coinmarketcap(website['Target'])
         elif website['Website'] == 'CoinMarketCap-ETH':
             data = scrape_coinmarketcap_ethereum(website['Target'])
-        elif website['Website'] == 'CoinMarketCap-XRP':  #added condition for XRP
+        elif website['Website'] == 'CoinMarketCap-XRP':  
             data = scrape_coinmarketcap_xrp(website['Target'])
         else:
             print(f"No scraper implemented for {website['Website']}")
@@ -181,7 +156,6 @@ def scrape_all_sites():
     create_time_series_visualizations()
 
 
-# In[744]:
 
 
 def save_to_hdf5(data, source):
@@ -223,7 +197,7 @@ def create_time_series_visualizations():
    with h5py.File(file_path, 'r') as f:
        for group_name in f.keys():
            group = f[group_name]
-           source = group_name.split('_')[0]  # Extract source
+           source = group_name.split('_')[0]  
 
            for crypto_name in group.keys():
                if isinstance(group[crypto_name], h5py.Dataset):
@@ -231,8 +205,8 @@ def create_time_series_visualizations():
                    if 'price' in dataset.attrs and 'timestamp' in dataset.attrs:
                        price = dataset[()]
                        timestamp_str = dataset.attrs['timestamp']
-                       crypto_name_for_key = dataset.attrs['name'].replace(' ', '_').replace('-', '_') # Use name from attrs
-                       key = f"{crypto_name_for_key}_{source}"  # Unique key
+                       crypto_name_for_key = dataset.attrs['name'].replace(' ', '_').replace('-', '_') 
+                       key = f"{crypto_name_for_key}_{source}" 
 
                        if key not in source_data:
                            source_data[key] = {'timestamps': [], 'prices': []}
@@ -312,7 +286,7 @@ def run_daily_job():
     try:
         while True:
             schedule.run_pending()
-            time.sleep(60)  # Check every minute
+            time.sleep(60)  
     except KeyboardInterrupt:
         print("Script terminated by user.")
 
@@ -339,7 +313,7 @@ if __name__ == "__main__":
 
     # Schedule to run once a day at 12:00 PM
     #schedule.every().day.at("12:00").do(run_scheduled_job)
-    schedule.every(1).hours.do(run_scheduled_job)
+    schedule.every(1).hours.do(run_scheduled_job) # For testing and efficiency
 
     print("Scheduled to run daily at 12:00 PM. Keep the script running.")
     print("Press Ctrl+C to exit.")
@@ -352,34 +326,15 @@ if __name__ == "__main__":
         print("Script terminated by user.")
 
 
-# In[456]:
 
 
 
 
 
-# In[457]:
 
 
 
-
-
-# In[ ]:
-
-
-
-
-
-# In[575]:
-
-
-
-
-
-# In[735]:
-
-
-schedule.clear()
+#schedule.clear() 
 
 
 # In[ ]:
